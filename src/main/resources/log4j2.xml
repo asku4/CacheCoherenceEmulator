@@ -1,0 +1,17 @@
+<Configuration>
+    <Appenders>
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout>
+                <pattern>%date{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %class{0}:%line - %message%n</pattern>
+            </PatternLayout>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Logger name="ru.mesi.AnnaK" level="trace" additivity="false">
+            <AppenderRef ref="console" level="debug"/>
+        </Logger>
+        <Root level="debug">
+            <AppenderRef ref="console"/>
+        </Root>
+    </Loggers>
+</Configuration>
