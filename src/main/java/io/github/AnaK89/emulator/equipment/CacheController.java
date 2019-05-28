@@ -6,8 +6,9 @@ import io.github.AnaK89.emulator.protocol.Message;
 import io.github.AnaK89.emulator.equipment.model.CacheString;
 
 import java.util.List;
+import java.util.Map;
 
-public interface CacheController extends Runnable, CacheListener {
+public interface CacheController extends CacheListener {
 
     void setListeners(final List<Listener> listeners);
 
@@ -31,4 +32,5 @@ public interface CacheController extends Runnable, CacheListener {
 
     boolean isRequested();
 
+    Map<Integer, CacheString> getCache();
 }

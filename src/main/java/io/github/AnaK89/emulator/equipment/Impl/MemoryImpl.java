@@ -25,9 +25,9 @@ public class MemoryImpl implements Memory {
         this.data = data;
     }
 
-    @Override
+    /*@Override
     public void run() {
-    }
+    }*/
 
     @Override
     public void getMessage(final Message message) {

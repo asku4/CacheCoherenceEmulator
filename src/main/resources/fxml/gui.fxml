@@ -29,8 +29,8 @@
                   </Label>
                   <TableView fx:id="ramTable" prefHeight="90.0" prefWidth="857.0">
                      <columns>
-                        <TableColumn fx:id="idRamColumn" maxWidth="37.0" prefWidth="37.0" text="ID" />
-                        <TableColumn fx:id="valueRamColumn" maxWidth="847.0" minWidth="820.0" prefWidth="820.0" resizable="false" text="Данные" />
+                        <TableColumn fx:id="idRamColumn" maxWidth="37.0" minWidth="30.0" prefWidth="37.0" text="ID" />
+                        <TableColumn fx:id="valueRamColumn" maxWidth="847.0" minWidth="822.0" prefWidth="822.0" resizable="false" text="Данные" />
                      </columns>
                   </TableView>
                </children>
@@ -47,9 +47,9 @@
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
-                        <TableView fx:id="processorTable1" prefHeight="109.0" prefWidth="253.0">
+                        <TableView fx:id="processorTable1" minHeight="-Infinity" minWidth="-Infinity" prefHeight="109.0" prefWidth="205.0">
                            <columns>
-                              <TableColumn fx:id="idProcColumn1" maxWidth="37.0" minWidth="30.0" prefWidth="37.0" sortType="DESCENDING" text="ID" />
+                              <TableColumn fx:id="idProcColumn1" maxWidth="37.0" minWidth="30.0" prefWidth="35.0" sortType="DESCENDING" text="ID" />
                               <TableColumn fx:id="stateProcColumn1" maxWidth="68.0" minWidth="27.0" prefWidth="68.0" text="Состояние" />
                               <TableColumn fx:id="valueProcColumn1" maxWidth="139.0" minWidth="27.0" prefWidth="102.0" text="Данные" />
                            </columns>
@@ -66,9 +66,9 @@
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
-                        <TableView fx:id="processorTable2" prefHeight="109.0" prefWidth="253.0">
+                        <TableView fx:id="processorTable2" minHeight="-Infinity" minWidth="-Infinity" prefHeight="109.0" prefWidth="205.0">
                            <columns>
-                              <TableColumn fx:id="idProcColumn2" maxWidth="37.0" minWidth="30.0" prefWidth="37.0" text="ID" />
+                              <TableColumn fx:id="idProcColumn2" maxWidth="37.0" minWidth="30.0" prefWidth="35.0" text="ID" />
                               <TableColumn fx:id="stateProcColumn2" maxWidth="68.0" minWidth="27.0" prefWidth="68.0" text="Состояние" />
                               <TableColumn fx:id="valueProcColumn2" maxWidth="139.0" minWidth="27.0" prefWidth="102.0" text="Данные" />
                            </columns>
@@ -85,9 +85,9 @@
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
-                        <TableView fx:id="processorTable3" prefHeight="109.0" prefWidth="253.0">
+                        <TableView fx:id="processorTable3" minHeight="-Infinity" minWidth="-Infinity" prefHeight="109.0" prefWidth="205.0">
                            <columns>
-                              <TableColumn fx:id="idProcColumn3" maxWidth="37.0" minWidth="30.0" prefWidth="37.0" text="ID" />
+                              <TableColumn fx:id="idProcColumn3" maxWidth="37.0" minWidth="30.0" prefWidth="35.0" text="ID" />
                               <TableColumn fx:id="stateProcColumn3" maxWidth="68.0" minWidth="27.0" prefWidth="68.0" text="Состояние" />
                               <TableColumn fx:id="valueProcColumn3" maxWidth="139.0" minWidth="27.0" prefWidth="102.0" text="Данные" />
                            </columns>
@@ -104,7 +104,7 @@
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
-                        <TableView fx:id="processorTable4" prefHeight="109.0" prefWidth="253.0">
+                        <TableView fx:id="processorTable4" minHeight="-Infinity" minWidth="-Infinity" prefHeight="109.0" prefWidth="205.0">
                            <columns>
                               <TableColumn fx:id="idProcColumn4" maxWidth="37.0" minWidth="30.0" prefWidth="37.0" text="ID" />
                               <TableColumn fx:id="stateProcColumn4" maxWidth="68.0" minWidth="27.0" prefWidth="68.0" text="Состояние" />

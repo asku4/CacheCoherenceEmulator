@@ -5,8 +5,8 @@ import java.util.List;
 
 public enum Action {
     REQUEST_VALID_INFO("Запрос на валидные данные"),
-    REWRITE_TO_OWN_CACHE("Обновить значение в КЭШе"),
-    NEW_WRITE_TO_OWN_CACHE("Новая запись в КЭШ процессора");
+    REWRITE_TO_OWN_CACHE("Обновить значение в КЭШ"),
+    NEW_WRITE_TO_OWN_CACHE("Запись в КЭШ процессора");
 
     private final String action;
 

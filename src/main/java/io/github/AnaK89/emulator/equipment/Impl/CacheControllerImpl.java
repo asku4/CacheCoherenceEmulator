@@ -31,9 +31,9 @@ public class CacheControllerImpl implements CacheController {
         this.protocol = protocol;
     }
 
-    @Override
+    /*@Override
     public void run() {
-    }
+    }*/
 
     @Override
     public void sendMessage(final Message message) {
@@ -104,5 +104,10 @@ public class CacheControllerImpl implements CacheController {
     @Override
     public boolean isRequested() {
         return isRequested;
+    }
+
+    @Override
+    public Map<Integer, CacheString> getCache() {
+        return cache;
     }
 }

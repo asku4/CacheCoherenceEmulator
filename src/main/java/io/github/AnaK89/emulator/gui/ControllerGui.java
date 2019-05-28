@@ -1,5 +1,6 @@
 package io.github.AnaK89.emulator.gui;
 
+import io.github.AnaK89.emulator.equipment.model.CacheString;
 import io.github.AnaK89.emulator.gui.model.Action;
 import io.github.AnaK89.emulator.gui.model.ProcString;
 import io.github.AnaK89.emulator.gui.model.RamString;
@@ -18,9 +19,7 @@ import io.github.AnaK89.emulator.equipment.Impl.MultiprocessorImpl;
 import io.github.AnaK89.emulator.equipment.Multiprocessor;
 
 import java.net.URL;
-import java.util.Map;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class ControllerGui implements Initializable{
     private static final Logger logger = LogManager.getLogger(ControllerGui.class);
@@ -141,19 +140,16 @@ public class ControllerGui implements Initializable{
                 }
                 break;
         }
+        updateProcTables();
+        ramTable.setItems(toRamStringList(multiprocessor.getMemory().getAllData()));
+        this.id.clear();
+        this.data.clear();
     }
 
     private void initRAM() {
         idRamColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         valueRamColumn.setCellValueFactory(new PropertyValueFactory<>("value"));
-        ramData = multiprocessor.getMemory().getAllData();
-
-
-        /*ObservableList<RamString> ramStrings = FXCollections.observableArrayList(
-                new RamString(2, "ex1"),
-                new RamString(1, "ex2")
-        );
-        ramTable.setItems(ramStrings);*/
+        ramTable.setItems(toRamStringList(multiprocessor.getMemory().getAllData()));
     }
 
     private void initProcessors() {
@@ -161,12 +157,7 @@ public class ControllerGui implements Initializable{
         setProcCellValueFactory(idProcColumn2, stateProcColumn2, valueProcColumn2);
         setProcCellValueFactory(idProcColumn3, stateProcColumn3, valueProcColumn3);
         setProcCellValueFactory(idProcColumn4, stateProcColumn4, valueProcColumn4);
-
-        ObservableList<ProcString> procStrings = FXCollections.observableArrayList(
-                new ProcString(2,"M", "ex1"),
-                new ProcString(1, "S","ex2")
-        );
-        processorTable1.setItems(procStrings);
+        updateProcTables();
     }
 
     private void initControlPanel(){
@@ -197,6 +188,13 @@ public class ControllerGui implements Initializable{
         });
     }
 
+    private void updateProcTables(){
+        processorTable1.setItems(toProcStringList(multiprocessor.getProcessors().get(0).getController().getCache()));
+        processorTable2.setItems(toProcStringList(multiprocessor.getProcessors().get(1).getController().getCache()));
+        processorTable3.setItems(toProcStringList(multiprocessor.getProcessors().get(2).getController().getCache()));
+        processorTable4.setItems(toProcStringList(multiprocessor.getProcessors().get(3).getController().getCache()));
+    }
+
     private void setVisibleAndManaged(final Pane pane, final boolean value){
         pane.setVisible(value);
         pane.setManaged(value);
@@ -218,5 +216,21 @@ public class ControllerGui implements Initializable{
         id.setCellValueFactory(new PropertyValueFactory<>("id"));
         state.setCellValueFactory(new PropertyValueFactory<>("state"));
         value.setCellValueFactory(new PropertyValueFactory<>("value"));
+    }
+
+    private ObservableList<ProcString> toProcStringList(final Map<Integer, CacheString> cache){
+        final List<ProcString> result = new ArrayList<>();
+        for (Integer id: cache.keySet()){
+            result.add(new ProcString(id, cache.get(id).getState(), cache.get(id).getData()));
+        }
+        return FXCollections.observableArrayList(result);
+    }
+
+    private ObservableList<RamString> toRamStringList(final Map<Integer, String> ram){
+        final List<RamString> result = new ArrayList<>();
+        for (Integer id: ram.keySet()){
+            result.add(new RamString(id, ram.get(id)));
+        }
+        return FXCollections.observableArrayList(result);
     }
 }

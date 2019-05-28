@@ -36,16 +36,14 @@ public class MultiprocessorImpl implements Multiprocessor {
             p.getController().setListeners(listeners);
         }
 
-        final Thread memoryThread = new Thread(memory);
+        /*final Thread memoryThread = new Thread(memory);
         memoryThread.start();
         threads.add(memoryThread);
         for (final Processor processor: processors){
             final Thread cacheThread = new Thread(processor.getController());
             cacheThread.start();
             threads.add(cacheThread);
-        }
-
-        threads.forEach(thread -> System.out.println(thread.isAlive()));
+        }*/
     }
 
     @Override
