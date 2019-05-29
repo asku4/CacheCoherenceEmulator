@@ -66,11 +66,6 @@ public class CacheControllerImpl implements CacheController {
     }
 
     @Override
-    public void newMessage(final Message message) {
-        sendMessage(message);
-    }
-
-    @Override
     public boolean containsCacheString(final Integer id) {
         return cache.containsKey(id);
     }

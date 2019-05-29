@@ -16,7 +16,7 @@ public interface CacheController extends CacheListener {
 
     void requestValidInfo(final int id);
 
-    void newMessage(final Message message);
+    void sendMessage(final Message message);
 
     boolean containsCacheString(final Integer id);
 
