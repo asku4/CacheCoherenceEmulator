@@ -23,13 +23,13 @@ public class ProcessorImpl implements Processor {
         this.controller = controller;
     }
 
-    //процессор записывает в свой собственный кэш; сама запись происходит не напрямую, а через контроллер, т.к. необходимо также отправлять сообщения на шину о состоянии
     @Override
     public void writeToOwnCache(final int id, final String data) {
+        GENERATOR_ID.updateId(id);
         controller.writeToOwnCache(id, data);
     }
 
-    //совершенно новые данные
+    @Override
     public void writeToOwnCache(final String data){
         writeToOwnCache(GENERATOR_ID.generate(), data);
     }

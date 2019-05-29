@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import io.github.AnaK89.emulator.equipment.CacheController;
 import io.github.AnaK89.emulator.equipment.listeners.Listener;
 import io.github.AnaK89.emulator.equipment.model.CacheString;
+import io.github.AnaK89.emulator.equipment.utils.Logs;
 import io.github.AnaK89.emulator.protocol.Message;
 import io.github.AnaK89.emulator.protocol.Protocol;
 import org.apache.logging.log4j.LogManager;
@@ -15,20 +16,21 @@ import java.util.Map;
 
 public class CacheControllerImpl implements CacheController {
     private static final Logger logger = LogManager.getLogger(CacheControllerImpl.class);
-    private final Map<Integer, CacheString> cache;
+    private final Map<Integer, CacheString> cache = new HashMap<>();
     private final Protocol protocol;
     private final String processorName;
+    private final Logs logs;
     private List<Listener> listeners;
     private boolean isRequested = false;
 
     @Inject
     public CacheControllerImpl(
             final String processorName,
-            final HashMap<Integer, CacheString> cache,
-            final Protocol protocol) {
+            final Protocol protocol,
+            final Logs logs) {
         this.processorName = processorName;
-        this.cache = cache;
         this.protocol = protocol;
+        this.logs = logs;
     }
 
     /*@Override
@@ -37,7 +39,7 @@ public class CacheControllerImpl implements CacheController {
 
     @Override
     public void sendMessage(final Message message) {
-        logger.info("{} send message: {} - {} - {}", message.getFrom(), message.getType(), message.getData().getId(), message.getData().getMessage());
+        addLog(String.format("%s send message: %s - %d - %s", message.getFrom(), message.getType(), message.getData().getId(), message.getData().getMessage()));
         for(final Listener l: listeners){
             l.getMessage(message);
         }
@@ -86,7 +88,7 @@ public class CacheControllerImpl implements CacheController {
     @Override
     public void changeStateCacheString(final Integer id, final String state) {
         if ( ! cache.get(id).getState().equals(state)){
-            logger.info("{} in {} changed state: {} -> {}", processorName, id, cache.get(id).getState(), state);
+            addLog(String.format("%s in %d changed state: %s -> %s", processorName, id, cache.get(id).getState(), state));
             cache.get(id).setState(state);
         }
     }
@@ -109,5 +111,11 @@ public class CacheControllerImpl implements CacheController {
     @Override
     public Map<Integer, CacheString> getCache() {
         return cache;
+    }
+
+    @Override
+    public void addLog(final String log){
+        logger.info(log);
+        logs.add(log);
     }
 }

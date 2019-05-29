@@ -10,4 +10,5 @@ public interface Memory extends Listener {
 
     Map<Integer, String> getAllData();
 
+    void addLog(final String log);
 }

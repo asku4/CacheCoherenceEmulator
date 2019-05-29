@@ -187,7 +187,7 @@
                                     <Insets left="10.0" />
                                  </HBox.margin>
                               </VBox>
-                              <Button fx:id="req" mnemonicParsing="false" onAction="#request" prefHeight="25.0" prefWidth="81.0" text="Запрос">
+                              <Button mnemonicParsing="false" onAction="#request" prefHeight="25.0" prefWidth="81.0" text="Запрос">
                                  <HBox.margin>
                                     <Insets left="10.0" top="16.0" />
                                  </HBox.margin>

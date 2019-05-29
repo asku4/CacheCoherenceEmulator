@@ -1,6 +1,7 @@
 package io.github.AnaK89.emulator.protocol.mesi;
 
 import io.github.AnaK89.emulator.equipment.Memory;
+import io.github.AnaK89.emulator.equipment.utils.Logs;
 import io.github.AnaK89.emulator.protocol.Message;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,6 +15,11 @@ import static io.github.AnaK89.emulator.protocol.mesi.MesiMessageType.*;
 
 public class MesiProtocolImpl implements Protocol {
     private static final Logger logger = LogManager.getLogger(MesiProtocolImpl.class);
+    private final Logs logs;
+
+    public MesiProtocolImpl(final Logs logs){
+        this.logs = logs;
+    }
 
     @Override
     public void cacheProcess(final CacheController cacheController, final Message message) {
@@ -24,7 +30,7 @@ public class MesiProtocolImpl implements Protocol {
             case BROADCAST_INVALID:
                 responseBroadcastInvalid(cacheController, message);
                 break;
-            case NEED_VALID_INFO:       //todo: если никто не ответил, взять инфу из памяти, хотя у нас такого не может быть в принципе (но это неточно)
+            case NEED_VALID_INFO:       //todo: если никто не ответил, взять инфу из памяти, хотя у нас такого не может быть в принципе, а надо, иначе не будет состояния Exclusive
                 responseValidInfo(cacheController, message);
                 break;
             case SEND_VALID_INFO:
@@ -45,14 +51,14 @@ public class MesiProtocolImpl implements Protocol {
         if (cacheController.containsCacheString(id)){
             if(! StateMesi.M.toString().equals(cacheController.getCacheString(id).getState())){
                 cacheController.newMessage(new MessageMesi(cacheController.getProcessorName(), BROADCAST_INVALID, id));
-                logger.info("Broadcast invalid");
+                addLog("Broadcast invalid");
             }
         } else {
             cacheController.newMessage(new MessageMesi(cacheController.getProcessorName(), READ_WITH_INTENT_TO_MODIFY, id));
         }
         final CacheString cacheString = new CacheString(StateMesi.M.toString(), data);
         cacheController.addCacheString(id, cacheString);
-        logger.info("{} add or change cacheString: {} - {} - {}", cacheController.getProcessorName(), id, cacheString.getData(), cacheString.getState());
+        addLog(String.format("%s add or change cacheString: %d - %s - %s", cacheController.getProcessorName(), id, cacheString.getData(), cacheString.getState()));
     }
 
     @Override
@@ -104,9 +110,14 @@ public class MesiProtocolImpl implements Protocol {
                 && message.getFrom() != null
                 && ! message.getFrom().equals(cacheController.getProcessorName())){
             final CacheString cacheString = new CacheString(message.getData().getNewState(), message.getData().getMessage());
-            logger.info("{} accept: {} - {}", cacheController.getProcessorName(), cacheString.getState(), cacheString.getData());
+            addLog(String.format("%s accept: %s - %s", cacheController.getProcessorName(), cacheString.getState(), cacheString.getData()));
             cacheController.addCacheString(message.getData().getId(), cacheString);
             cacheController.isRequest(false);
         }
+    }
+
+    private void addLog(final String log){
+        logger.info(log);
+        logs.add(log);
     }
 }

@@ -1,12 +1,9 @@
 package io.github.AnaK89.emulator.gui;
 
-import io.github.AnaK89.emulator.equipment.model.CacheString;
 import io.github.AnaK89.emulator.gui.model.Action;
 import io.github.AnaK89.emulator.gui.model.ProcString;
 import io.github.AnaK89.emulator.gui.model.RamString;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -20,6 +17,8 @@ import io.github.AnaK89.emulator.equipment.Multiprocessor;
 
 import java.net.URL;
 import java.util.*;
+
+import static io.github.AnaK89.emulator.gui.model.Action.NEW_WRITE_TO_OWN_CACHE;
 
 public class ControllerGui implements Initializable{
     private static final Logger logger = LogManager.getLogger(ControllerGui.class);
@@ -100,19 +99,15 @@ public class ControllerGui implements Initializable{
     private VBox dataPane;
 
     @FXML
-    private Button req;
-
-    @FXML
     private Button cleanUpAll;
 
     @FXML
     private ListView systemMessage;
 
     private final Multiprocessor multiprocessor = new MultiprocessorImpl(4);
-    private Map<Integer, String> ramData;
+    private final UtilsGui utils = new UtilsGui();
 
     public ControllerGui(){
-
     }
 
     @Override
@@ -123,25 +118,36 @@ public class ControllerGui implements Initializable{
     }
 
     @FXML
-    private void request(final ActionEvent event) {
+    private void request() {
         final int id = validateIDField();
+        if(id == -1 && !Objects.equals(Action.getValueOf(action.getValue()), NEW_WRITE_TO_OWN_CACHE)){
+            final String log = "ID Number of Processor is invalid";
+            multiprocessor.addLog(log);
+            logger.info(log);
+        }
+
         switch (Objects.requireNonNull(Action.getValueOf(action.getValue()))){
             case REQUEST_VALID_INFO:
                 if(id != -1){
+                    multiprocessor.addLog(String.format("Request: %s - Proc: %d - ID: %d", action.getValue(), processorNum.getValue(), id));
                     multiprocessor.getProcessors().get(processorNum.getValue() - 1).requestValidInfo(id);
                 }
                 break;
             case NEW_WRITE_TO_OWN_CACHE:
+                multiprocessor.addLog(String.format("Request: %s - Proc: %d - Data: %s", action.getValue(), processorNum.getValue(), data.getText()));
                 multiprocessor.getProcessors().get(processorNum.getValue() - 1).writeToOwnCache(data.getText());
                 break;
             case REWRITE_TO_OWN_CACHE:
                 if(id != -1){
+                    multiprocessor.addLog(String.format("Request: %s - Proc: %d - ID: %d - Data: %s", action.getValue(), processorNum.getValue(), id, data.getText()));
                     multiprocessor.getProcessors().get(processorNum.getValue() - 1).writeToOwnCache(id, data.getText());
                 }
                 break;
         }
+
         updateProcTables();
-        ramTable.setItems(toRamStringList(multiprocessor.getMemory().getAllData()));
+        updateRamTable();
+        updateSystemMessage();
         this.id.clear();
         this.data.clear();
     }
@@ -149,7 +155,6 @@ public class ControllerGui implements Initializable{
     private void initRAM() {
         idRamColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         valueRamColumn.setCellValueFactory(new PropertyValueFactory<>("value"));
-        ramTable.setItems(toRamStringList(multiprocessor.getMemory().getAllData()));
     }
 
     private void initProcessors() {
@@ -157,7 +162,6 @@ public class ControllerGui implements Initializable{
         setProcCellValueFactory(idProcColumn2, stateProcColumn2, valueProcColumn2);
         setProcCellValueFactory(idProcColumn3, stateProcColumn3, valueProcColumn3);
         setProcCellValueFactory(idProcColumn4, stateProcColumn4, valueProcColumn4);
-        updateProcTables();
     }
 
     private void initControlPanel(){
@@ -169,7 +173,7 @@ public class ControllerGui implements Initializable{
 
     private void initAction(){
         action.setItems(FXCollections.observableArrayList(Action.getAll()));
-        action.setValue(Action.NEW_WRITE_TO_OWN_CACHE.toString());
+        action.setValue(NEW_WRITE_TO_OWN_CACHE.toString());
         action.setOnAction(event -> {
             switch (Objects.requireNonNull(Action.getValueOf(action.getValue()))) {
                 case REQUEST_VALID_INFO:
@@ -189,10 +193,19 @@ public class ControllerGui implements Initializable{
     }
 
     private void updateProcTables(){
-        processorTable1.setItems(toProcStringList(multiprocessor.getProcessors().get(0).getController().getCache()));
-        processorTable2.setItems(toProcStringList(multiprocessor.getProcessors().get(1).getController().getCache()));
-        processorTable3.setItems(toProcStringList(multiprocessor.getProcessors().get(2).getController().getCache()));
-        processorTable4.setItems(toProcStringList(multiprocessor.getProcessors().get(3).getController().getCache()));
+        processorTable1.setItems(utils.toProcStringList(multiprocessor.getProcessors().get(0).getController().getCache()));
+        processorTable2.setItems(utils.toProcStringList(multiprocessor.getProcessors().get(1).getController().getCache()));
+        processorTable3.setItems(utils.toProcStringList(multiprocessor.getProcessors().get(2).getController().getCache()));
+        processorTable4.setItems(utils.toProcStringList(multiprocessor.getProcessors().get(3).getController().getCache()));
+    }
+
+    private void updateRamTable(){
+        ramTable.setItems(utils.toRamStringList(multiprocessor.getMemory().getAllData()));
+    }
+
+    private void updateSystemMessage(){
+        systemMessage.setItems(utils.toSystemMessage(multiprocessor.getLogs()));
+        systemMessage.scrollTo(multiprocessor.getLogs().get().size());
     }
 
     private void setVisibleAndManaged(final Pane pane, final boolean value){
@@ -204,7 +217,6 @@ public class ControllerGui implements Initializable{
         try{
             return Integer.parseInt(id.getText());
         } catch (NumberFormatException e){
-            logger.info("ID Number of Processor is invalid");
             return -1;
         }
     }
@@ -216,21 +228,5 @@ public class ControllerGui implements Initializable{
         id.setCellValueFactory(new PropertyValueFactory<>("id"));
         state.setCellValueFactory(new PropertyValueFactory<>("state"));
         value.setCellValueFactory(new PropertyValueFactory<>("value"));
-    }
-
-    private ObservableList<ProcString> toProcStringList(final Map<Integer, CacheString> cache){
-        final List<ProcString> result = new ArrayList<>();
-        for (Integer id: cache.keySet()){
-            result.add(new ProcString(id, cache.get(id).getState(), cache.get(id).getData()));
-        }
-        return FXCollections.observableArrayList(result);
-    }
-
-    private ObservableList<RamString> toRamStringList(final Map<Integer, String> ram){
-        final List<RamString> result = new ArrayList<>();
-        for (Integer id: ram.keySet()){
-            result.add(new RamString(id, ram.get(id)));
-        }
-        return FXCollections.observableArrayList(result);
     }
 }

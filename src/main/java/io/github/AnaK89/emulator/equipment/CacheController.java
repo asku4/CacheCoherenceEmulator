@@ -28,9 +28,11 @@ public interface CacheController extends CacheListener {
 
     String getProcessorName();
 
-    void isRequest(boolean req);
+    void isRequest(final boolean req);
 
     boolean isRequested();
 
     Map<Integer, CacheString> getCache();
+
+    void addLog(final String log);
 }

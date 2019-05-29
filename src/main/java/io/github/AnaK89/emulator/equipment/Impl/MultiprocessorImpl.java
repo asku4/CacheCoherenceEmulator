@@ -3,30 +3,31 @@ package io.github.AnaK89.emulator.equipment.Impl;
 import com.google.inject.Inject;
 import io.github.AnaK89.emulator.equipment.Memory;
 import io.github.AnaK89.emulator.equipment.listeners.Listener;
+import io.github.AnaK89.emulator.equipment.utils.Logs;
 import io.github.AnaK89.emulator.protocol.mesi.MesiProtocolImpl;
 import io.github.AnaK89.emulator.equipment.CacheController;
 import io.github.AnaK89.emulator.equipment.Multiprocessor;
 import io.github.AnaK89.emulator.equipment.Processor;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class MultiprocessorImpl implements Multiprocessor {
     private final Memory memory;
     private final List<Processor> processors = new ArrayList<>();
-    private final List<Thread> threads= new ArrayList<>();
+    private static final Logs logs = new Logs();
+    //private final List<Thread> threads= new ArrayList<>();
 
     @Inject
     public MultiprocessorImpl(final int quantityProcessors) {
         List<Listener> listeners = new ArrayList<>();
 
-        this.memory = new MemoryImpl(new MesiProtocolImpl(), new HashMap<>());
+        this.memory = new MemoryImpl(new MesiProtocolImpl(logs), logs);
         listeners.add(memory);
 
         for(int i = 1; i <= quantityProcessors; i++){
             final String name = "Processor" + i;
-            final CacheController cacheController = new CacheControllerImpl(name, new HashMap<>(), new MesiProtocolImpl());
+            final CacheController cacheController = new CacheControllerImpl(name, new MesiProtocolImpl(logs), logs);
             listeners.add(cacheController);
             final Processor processor = new ProcessorImpl(name, cacheController);
             processors.add(processor);
@@ -46,12 +47,12 @@ public class MultiprocessorImpl implements Multiprocessor {
         }*/
     }
 
-    @Override
+    /*@Override
     public void stop() {
         for(final Thread thread: threads){
             thread.stop();
         }
-    }
+    }*/
 
     @Override
     public Memory getMemory() {
@@ -61,5 +62,15 @@ public class MultiprocessorImpl implements Multiprocessor {
     @Override
     public List<Processor> getProcessors() {
         return processors;
+    }
+
+    @Override
+    public Logs getLogs() {
+        return logs;
+    }
+
+    @Override
+    public void addLog(final String log) {
+        logs.add(log);
     }
 }

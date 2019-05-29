@@ -5,7 +5,7 @@ import java.util.List;
 
 public enum Action {
     REQUEST_VALID_INFO("Запрос на валидные данные"),
-    REWRITE_TO_OWN_CACHE("Обновить значение в КЭШ"),
+    REWRITE_TO_OWN_CACHE("Запись в КЭШ процессора по ID"),
     NEW_WRITE_TO_OWN_CACHE("Запись в КЭШ процессора");
 
     private final String action;
@@ -26,9 +26,9 @@ public enum Action {
         return action;
     }
 
-    public static Action getValueOf(final String state){
+    public static Action getValueOf(final String action){
         for (Action s: values()){
-            if(s.action.equals(state)){
+            if(s.action.equals(action)){
                 return s;
             }
         }
