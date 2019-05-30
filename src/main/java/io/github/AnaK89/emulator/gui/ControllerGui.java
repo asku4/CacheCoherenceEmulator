@@ -102,12 +102,9 @@ public class ControllerGui implements Initializable{
     private VBox procNumPane;
 
     @FXML
-    private Button cleanUpAll;
-
-    @FXML
     private ListView systemMessage;
 
-    private final Multiprocessor multiprocessor = new MultiprocessorImpl(4);
+    private Multiprocessor multiprocessor = new MultiprocessorImpl(4);
     private final UtilsGui utils = new UtilsGui();
 
     public ControllerGui(){
@@ -115,9 +112,7 @@ public class ControllerGui implements Initializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        initRAM();
-        initProcessors();
-        initControlPanel();
+        initComponents(true);
     }
 
     @FXML
@@ -154,11 +149,22 @@ public class ControllerGui implements Initializable{
                 }
         }
 
-        updateProcTables();
-        updateRamTable();
-        updateSystemMessage();
-        this.id.clear();
-        this.data.clear();
+        updateComponents();
+    }
+
+    @FXML
+    private void cleanUpAll(){
+        multiprocessor = new MultiprocessorImpl(4);
+        initComponents(false);
+        updateComponents();
+    }
+
+    private void initComponents(final boolean initControlPanel){
+        initRAM();
+        initProcessors();
+        if(initControlPanel){
+            initControlPanel();
+        }
     }
 
     private void initRAM() {
@@ -212,6 +218,14 @@ public class ControllerGui implements Initializable{
                     break;
             }
         });
+    }
+
+    private void updateComponents(){
+        updateProcTables();
+        updateRamTable();
+        updateSystemMessage();
+        this.id.clear();
+        this.data.clear();
     }
 
     private void updateProcTables(){
