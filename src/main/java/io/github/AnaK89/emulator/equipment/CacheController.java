@@ -1,16 +1,16 @@
 package io.github.AnaK89.emulator.equipment;
 
-import io.github.AnaK89.emulator.equipment.listeners.CacheListener;
-import io.github.AnaK89.emulator.equipment.listeners.Listener;
 import io.github.AnaK89.emulator.protocol.Message;
 import io.github.AnaK89.emulator.equipment.model.CacheString;
 
 import java.util.List;
 import java.util.Map;
 
-public interface CacheController extends CacheListener {
+public interface CacheController extends Listener {
 
     void setListeners(final List<Listener> listeners);
+
+    void writeToOwnCache(final String data);
 
     void writeToOwnCache(final int id, final String data);
 
@@ -35,4 +35,6 @@ public interface CacheController extends CacheListener {
     Map<Integer, CacheString> getCache();
 
     void addLog(final String log);
+
+    void setProcessor(final Processor processor);
 }

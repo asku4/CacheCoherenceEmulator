@@ -48,11 +48,11 @@ public class Main {
     }
 
     private static void wrt(final Processor processor, final int id, final String data){
-        processor.writeToOwnCache(id, data);
+        processor.getController().writeToOwnCache(id, data);
     }
 
     private static void rvi(final Processor processor, final int id){
-        processor.requestValidInfo(id);
+        processor.getController().requestValidInfo(id);
     }
 
     private static class Com{

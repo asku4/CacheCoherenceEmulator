@@ -44,6 +44,13 @@ public class MesiProtocolImpl implements Protocol {
         if(message.getType().equals(WRITE_TO_MEMORY) && ! nextMessage.getType().equals(STUB_TO_MEMORY)){
             memory.write(message.getData().getId(), message.getData().getMessage());
         }
+
+        if(message.getType().equals(NEED_VALID_INFO) && ! nextMessage.getType().equals(STUB_TO_MEMORY)){
+            final int id = message.getData().getId();
+            if(memory.containsData(id)){
+                memory.sendMessage(new MessageMesi("Memory", SEND_VALID_INFO, id, memory.getData(id), StateMesi.E.toString()));
+            }
+        }
     }
 
     @Override
@@ -67,12 +74,19 @@ public class MesiProtocolImpl implements Protocol {
         cacheController.sendMessage(new MessageMesi(cacheController.getProcessorName(), NEED_VALID_INFO, id));
     }
 
-    private void responseValidInfo(final CacheController cacheController, final Message message) {
+    private static int countProc = 0;
+    private synchronized void responseValidInfo(final CacheController cacheController, final Message message) {
         final int id = message.getData().getId();
-        if( ! cacheController.containsCacheString(id) || message.getFrom().equals(cacheController.getProcessorName()) ){
+        if( ! cacheController.containsCacheString(id) || message.getSender().equals(cacheController.getProcessorName()) ){
+            countProc++;
+            if(countProc == 4){
+                countProc = 0;
+                cacheController.sendMessage(new MessageMesi(cacheController.getProcessorName(), EMPTY));
+            }
             return;
         }
 
+        cacheController.sendMessage(new MessageMesi(cacheController.getProcessorName(), STUB_TO_MEMORY));
         switch (Objects.requireNonNull(StateMesi.getValueOf(cacheController.getCacheString(id).getState()))){
             case M:
                 cacheController.sendMessage(new MessageMesi(cacheController.getProcessorName(), WRITE_TO_MEMORY, id, cacheController.getCacheString(id).getData()));
@@ -85,7 +99,7 @@ public class MesiProtocolImpl implements Protocol {
     }
 
     private void responseToRWITM(final CacheController cacheController, final Message message){
-        if(message.getFrom() != null && ! message.getFrom().equals(cacheController.getProcessorName())){
+        if(message.getSender() != null && ! message.getSender().equals(cacheController.getProcessorName())){
             final int id = message.getData().getId();
             if (cacheController.containsCacheString(id)){
                 if(StateMesi.M.toString().equals(cacheController.getCacheString(id).getState())){
@@ -100,15 +114,15 @@ public class MesiProtocolImpl implements Protocol {
     }
 
     private void responseBroadcastInvalid(final CacheController cacheController, final Message message){
-        if(message.getFrom() != null && ! message.getFrom().equals(cacheController.getProcessorName()) && cacheController.containsCacheString(message.getData().getId())){
+        if(message.getSender() != null && ! message.getSender().equals(cacheController.getProcessorName()) && cacheController.containsCacheString(message.getData().getId())){
             cacheController.changeStateCacheString(message.getData().getId(), StateMesi.I.toString());
         }
     }
 
     private void acceptValidInfo(final CacheController cacheController, final Message message){
         if(cacheController.isRequested()
-                && message.getFrom() != null
-                && ! message.getFrom().equals(cacheController.getProcessorName())){
+                && message.getSender() != null
+                && ! message.getSender().equals(cacheController.getProcessorName())){
             final CacheString cacheString = new CacheString(message.getData().getNewState(), message.getData().getMessage());
             addLog(String.format("%s accept: %s - %s", cacheController.getProcessorName(), cacheString.getState(), cacheString.getData()));
             cacheController.addCacheString(message.getData().getId(), cacheString);

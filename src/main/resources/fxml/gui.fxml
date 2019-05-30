@@ -147,7 +147,7 @@
                                        </VBox.margin></ComboBox>
                                  </children>
                               </VBox>
-                              <VBox prefHeight="60.0" prefWidth="140.0">
+                              <VBox fx:id="procNumPane" prefHeight="60.0" prefWidth="140.0">
                                  <children>
                                     <Label prefHeight="17.0" prefWidth="126.0" text="Номер процессора:">
                                        <VBox.margin>

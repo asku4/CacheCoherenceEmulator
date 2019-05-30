@@ -99,6 +99,9 @@ public class ControllerGui implements Initializable{
     private VBox dataPane;
 
     @FXML
+    private VBox procNumPane;
+
+    @FXML
     private Button cleanUpAll;
 
     @FXML
@@ -121,28 +124,31 @@ public class ControllerGui implements Initializable{
     private void request() {
         final int id = validateIDField();
         if(id == -1 && !Objects.equals(Action.getValueOf(action.getValue()), NEW_WRITE_TO_OWN_CACHE)){
-            final String log = "ID Number of Processor is invalid";
-            multiprocessor.addLog(log);
-            logger.info(log);
+            addLog("ID Number of Processor is invalid");
         }
 
         switch (Objects.requireNonNull(Action.getValueOf(action.getValue()))){
             case REQUEST_VALID_INFO:
                 if(id != -1){
-                    multiprocessor.addLog(String.format("Request: %s - Proc: %d - ID: %d", action.getValue(), processorNum.getValue(), id));
-                    multiprocessor.getProcessors().get(processorNum.getValue() - 1).requestValidInfo(id);
+                    addLog(String.format("Request: %s - Proc: %d - ID: %d", action.getValue(), processorNum.getValue(), id));
+                    multiprocessor.getProcessors().get(processorNum.getValue() - 1).getController().requestValidInfo(id);
                 }
                 break;
             case NEW_WRITE_TO_OWN_CACHE:
-                multiprocessor.addLog(String.format("Request: %s - Proc: %d - Data: %s", action.getValue(), processorNum.getValue(), data.getText()));
-                multiprocessor.getProcessors().get(processorNum.getValue() - 1).writeToOwnCache(data.getText());
+                addLog(String.format("Request: %s - Proc: %d - Data: %s", action.getValue(), processorNum.getValue(), data.getText()));
+                multiprocessor.getProcessors().get(processorNum.getValue() - 1).getController().writeToOwnCache(data.getText());
                 break;
             case REWRITE_TO_OWN_CACHE:
                 if(id != -1){
-                    multiprocessor.addLog(String.format("Request: %s - Proc: %d - ID: %d - Data: %s", action.getValue(), processorNum.getValue(), id, data.getText()));
-                    multiprocessor.getProcessors().get(processorNum.getValue() - 1).writeToOwnCache(id, data.getText());
+                    addLog(String.format("Request: %s - Proc: %d - ID: %d - Data: %s", action.getValue(), processorNum.getValue(), id, data.getText()));
+                    multiprocessor.getProcessors().get(processorNum.getValue() - 1).getController().writeToOwnCache(id, data.getText());
                 }
                 break;
+            case WRITE_TO_MEMORY:
+                if(id != -1){
+                    addLog(String.format("Request: %s - ID: %d - Data: %s", action.getValue(), id, data.getText()));
+                    multiprocessor.getMemory().write(id, data.getText());
+                }
         }
 
         updateProcTables();
@@ -177,14 +183,22 @@ public class ControllerGui implements Initializable{
         action.setOnAction(event -> {
             switch (Objects.requireNonNull(Action.getValueOf(action.getValue()))) {
                 case REQUEST_VALID_INFO:
+                    setVisibleAndManaged(procNumPane, true);
                     setVisibleAndManaged(dataPane, false);
                     setVisibleAndManaged(idPane, true);
                     break;
                 case NEW_WRITE_TO_OWN_CACHE:
+                    setVisibleAndManaged(procNumPane, true);
                     setVisibleAndManaged(dataPane, true);
                     setVisibleAndManaged(idPane, false);
                     break;
                 case REWRITE_TO_OWN_CACHE:
+                    setVisibleAndManaged(procNumPane, true);
+                    setVisibleAndManaged(dataPane, true);
+                    setVisibleAndManaged(idPane, true);
+                    break;
+                case WRITE_TO_MEMORY:
+                    setVisibleAndManaged(procNumPane, false);
                     setVisibleAndManaged(dataPane, true);
                     setVisibleAndManaged(idPane, true);
                     break;
@@ -228,5 +242,10 @@ public class ControllerGui implements Initializable{
         id.setCellValueFactory(new PropertyValueFactory<>("id"));
         state.setCellValueFactory(new PropertyValueFactory<>("state"));
         value.setCellValueFactory(new PropertyValueFactory<>("value"));
+    }
+
+    private void addLog(final String log){
+        logger.info(log);
+        multiprocessor.getMemory().addLog(log);
     }
 }

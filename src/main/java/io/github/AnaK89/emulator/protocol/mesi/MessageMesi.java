@@ -6,32 +6,32 @@ import io.github.AnaK89.emulator.protocol.model.Data;
 public class MessageMesi implements Message {
     private final MesiMessageType type;
     private final Data data;
-    private final String from;
+    private final String sender;
 
     //сообщение для записи/модфикации сущестующих в кэше данных
-    MessageMesi(final String from, final MesiMessageType type, final int id, final String message, final String newState){
-        this.from = from;
+    MessageMesi(final String sender, final MesiMessageType type, final int id, final String message, final String newState){
+        this.sender = sender;
         this.type = type;
         this.data = new Data(id, message, newState);
     }
 
     //для операции запроса валидной информации и RWITM, BROADCAST_INVALID
-    MessageMesi(final String from, final MesiMessageType type, final int id){
-        this.from = from;
+    MessageMesi(final String sender, final MesiMessageType type, final int id){
+        this.sender = sender;
         this.type = type;
         this.data = new Data(id);
     }
 
     //для операций STUB_TO_MEMORY, EMPTY
-    MessageMesi(final String from, final MesiMessageType type){
+    MessageMesi(final String sender, final MesiMessageType type){
         this.type = type;
         this.data = new Data();
-        this.from = from;
+        this.sender = sender;
     }
 
     //для записи в память
-    MessageMesi(final String from, final MesiMessageType type, final int id, final String message){
-        this.from = from;
+    MessageMesi(final String sender, final MesiMessageType type, final int id, final String message){
+        this.sender = sender;
         this.type = type;
         this.data = new Data(id, message);
     }
@@ -44,7 +44,7 @@ public class MessageMesi implements Message {
         return type;
     }
 
-    public String getFrom() {
-        return from;
+    public String getSender() {
+        return sender;
     }
 }

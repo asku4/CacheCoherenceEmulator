@@ -2,6 +2,7 @@ package io.github.AnaK89.emulator.equipment.Impl;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import io.github.AnaK89.emulator.equipment.Listener;
 import io.github.AnaK89.emulator.equipment.Memory;
 import io.github.AnaK89.emulator.equipment.utils.Logs;
 import io.github.AnaK89.emulator.protocol.Message;
@@ -17,6 +18,7 @@ public class MemoryImpl implements Memory {
     private final Protocol protocol;
     private final Logs logs;
     private final Map<Integer, String> data = new HashMap<>();
+    private List<Listener> listeners;
     private Message prevMessage;
 
     @Inject
@@ -30,6 +32,13 @@ public class MemoryImpl implements Memory {
     /*@Override
     public void run() {
     }*/
+
+    @Override
+    public void sendMessage(Message message) {
+        for(final Listener l: listeners){
+            l.getMessage(message);
+        }
+    }
 
     @Override
     public void getMessage(final Message message) {
@@ -50,10 +59,12 @@ public class MemoryImpl implements Memory {
         }
     }
 
+    @Override
     public boolean containsData(final Integer id){
         return data.containsKey(id);
     }
 
+    @Override
     public String getData(final Integer id){
         return data.get(id);
     }
@@ -61,6 +72,11 @@ public class MemoryImpl implements Memory {
     @Override
     public Map<Integer, String> getAllData(){
         return this.data;
+    }
+
+    @Override
+    public void setListeners(final List<Listener> listeners){
+        this.listeners = listeners;
     }
 
     @Override

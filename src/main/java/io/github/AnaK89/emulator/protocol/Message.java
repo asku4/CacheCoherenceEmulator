@@ -9,6 +9,6 @@ public interface Message {
 
     MesiMessageType getType();
 
-    String getFrom();
+    String getSender();
 
 }

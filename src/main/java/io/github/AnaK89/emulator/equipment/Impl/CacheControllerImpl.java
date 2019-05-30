@@ -2,8 +2,10 @@ package io.github.AnaK89.emulator.equipment.Impl;
 
 import com.google.inject.Inject;
 import io.github.AnaK89.emulator.equipment.CacheController;
-import io.github.AnaK89.emulator.equipment.listeners.Listener;
+import io.github.AnaK89.emulator.equipment.Processor;
+import io.github.AnaK89.emulator.equipment.Listener;
 import io.github.AnaK89.emulator.equipment.model.CacheString;
+import io.github.AnaK89.emulator.equipment.utils.GeneratorId;
 import io.github.AnaK89.emulator.equipment.utils.Logs;
 import io.github.AnaK89.emulator.protocol.Message;
 import io.github.AnaK89.emulator.protocol.Protocol;
@@ -16,19 +18,18 @@ import java.util.Map;
 
 public class CacheControllerImpl implements CacheController {
     private static final Logger logger = LogManager.getLogger(CacheControllerImpl.class);
+    private static final GeneratorId GENERATOR_ID = new GeneratorId();
     private final Map<Integer, CacheString> cache = new HashMap<>();
     private final Protocol protocol;
-    private final String processorName;
     private final Logs logs;
     private List<Listener> listeners;
+    private Processor processor;
     private boolean isRequested = false;
 
     @Inject
     public CacheControllerImpl(
-            final String processorName,
             final Protocol protocol,
             final Logs logs) {
-        this.processorName = processorName;
         this.protocol = protocol;
         this.logs = logs;
     }
@@ -39,7 +40,7 @@ public class CacheControllerImpl implements CacheController {
 
     @Override
     public void sendMessage(final Message message) {
-        addLog(String.format("%s send message: %s - %d - %s", message.getFrom(), message.getType(), message.getData().getId(), message.getData().getMessage()));
+        addLog(String.format("%s send message: %s - %d - %s", message.getSender(), message.getType(), message.getData().getId(), message.getData().getMessage()));
         for(final Listener l: listeners){
             l.getMessage(message);
         }
@@ -56,7 +57,13 @@ public class CacheControllerImpl implements CacheController {
     }
 
     @Override
+    public void writeToOwnCache(String data) {
+        writeToOwnCache(GENERATOR_ID.generate(), data);
+    }
+
+    @Override
     public void writeToOwnCache(final int id, final String data) {
+        GENERATOR_ID.updateId(id);
         protocol.writeToOwnCache(this, id, data);
     }
 
@@ -83,14 +90,14 @@ public class CacheControllerImpl implements CacheController {
     @Override
     public void changeStateCacheString(final Integer id, final String state) {
         if ( ! cache.get(id).getState().equals(state)){
-            addLog(String.format("%s in %d changed state: %s -> %s", processorName, id, cache.get(id).getState(), state));
+            addLog(String.format("%s in %d changed state: %s -> %s", processor.getName(), id, cache.get(id).getState(), state));
             cache.get(id).setState(state);
         }
     }
 
     @Override
     public String getProcessorName() {
-        return processorName;
+        return processor.getName();
     }
 
     @Override
@@ -112,5 +119,10 @@ public class CacheControllerImpl implements CacheController {
     public void addLog(final String log){
         logger.info(log);
         logs.add(log);
+    }
+
+    @Override
+    public void setProcessor(final Processor processor){
+        this.processor = processor;
     }
 }
