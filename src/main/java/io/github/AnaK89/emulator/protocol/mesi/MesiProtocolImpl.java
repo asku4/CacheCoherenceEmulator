@@ -31,7 +31,7 @@ public class MesiProtocolImpl implements Protocol {
             case BROADCAST_INVALID:
                 responseBroadcastInvalid(cacheController, message);
                 break;
-            case NEED_VALID_INFO:       //todo: если никто не ответил, взять инфу из памяти, хотя у нас такого не может быть в принципе, а надо, иначе не будет состояния Exclusive
+            case NEED_VALID_INFO:
                 responseValidInfo(cacheController, message);
                 break;
             case SEND_VALID_INFO:
@@ -100,7 +100,7 @@ public class MesiProtocolImpl implements Protocol {
                 cacheController.sendMessage(new MessageMesi(cacheController.getProcessorName(), WRITE_TO_MEMORY, id, cacheController.getCache().get(id).getData()));
             case E:
             case S:
-                cacheController.sendMessage(new MessageMesi(cacheController.getProcessorName(), SEND_VALID_INFO, id, cacheController.getCache().get(id).getData(), StateMesi.S.toString())); //todo: исправить проблему множественного ответа(а надо ли?)
+                cacheController.sendMessage(new MessageMesi(cacheController.getProcessorName(), SEND_VALID_INFO, id, cacheController.getCache().get(id).getData(), StateMesi.S.toString()));
                 cacheController.changeStateCacheString(id, StateMesi.S.toString());
                 break;
         }
