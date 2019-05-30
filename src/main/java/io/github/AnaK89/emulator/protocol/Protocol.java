@@ -1,5 +1,6 @@
 package io.github.AnaK89.emulator.protocol;
 
+import io.github.AnaK89.emulator.equipment.Listener;
 import io.github.AnaK89.emulator.equipment.Memory;
 import io.github.AnaK89.emulator.equipment.CacheController;
 
@@ -11,4 +12,6 @@ public interface Protocol {
     void writeToOwnCache(final CacheController cacheController, final int id, final String data);
 
     void requestValidInfo(final CacheController cacheController, final int id);
+
+    void broadcastInvalid(Listener listener, String name, int id);
 }

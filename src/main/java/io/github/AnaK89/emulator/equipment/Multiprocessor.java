@@ -9,9 +9,5 @@ public interface Multiprocessor {
 
     Memory getMemory();
 
-   /* void stop();*/
-
     Logs getLogs();
-
-    void addLog(String log);
 }

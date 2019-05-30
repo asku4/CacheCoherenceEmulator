@@ -16,12 +16,13 @@ public class MultiprocessorImpl implements Multiprocessor {
     private final Memory memory;
     private final List<Processor> processors = new ArrayList<>();
     private static final Logs logs = new Logs();
-    //private final List<Thread> threads= new ArrayList<>();
 
     @Inject
     public MultiprocessorImpl(final int quantityProcessors) {
         List<Listener> listeners = new ArrayList<>();
 
+        this.memory = new MemoryImpl(new MesiProtocolImpl(logs), logs);
+        listeners.add(memory);
         for(int i = 1; i <= quantityProcessors; i++){
             final String name = "Processor" + i;
             final CacheController cacheController = new CacheControllerImpl(new MesiProtocolImpl(logs), logs);
@@ -30,30 +31,12 @@ public class MultiprocessorImpl implements Multiprocessor {
             cacheController.setProcessor(processor);
             processors.add(processor);
         }
-        this.memory = new MemoryImpl(new MesiProtocolImpl(logs), logs);
-        listeners.add(memory);
 
         for(final Processor p: processors){
-            p.getController().setListeners(listeners);
+            setListeners(p.getController(), listeners);
         }
-        memory.setListeners(listeners);
-
-        /*final Thread memoryThread = new Thread(memory);
-        memoryThread.start();
-        threads.add(memoryThread);
-        for (final Processor processor: processors){
-            final Thread cacheThread = new Thread(processor.getController());
-            cacheThread.start();
-            threads.add(cacheThread);
-        }*/
+        setListeners(memory, listeners);
     }
-
-    /*@Override
-    public void stop() {
-        for(final Thread thread: threads){
-            thread.stop();
-        }
-    }*/
 
     @Override
     public Memory getMemory() {
@@ -70,8 +53,10 @@ public class MultiprocessorImpl implements Multiprocessor {
         return logs;
     }
 
-    @Override
-    public void addLog(final String log) {
-        logs.add(log);
+    @SuppressWarnings("unchecked")
+    private void setListeners(final Listener listener, final List<Listener> listeners){
+        final List<Listener> resultListeners = (List<Listener>) ((ArrayList<Listener>) listeners).clone();
+        resultListeners.remove(listener);
+        listener.setListeners(resultListeners);
     }
 }

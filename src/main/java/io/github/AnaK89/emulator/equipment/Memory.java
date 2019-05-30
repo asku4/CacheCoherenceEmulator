@@ -1,19 +1,16 @@
 package io.github.AnaK89.emulator.equipment;
 
-import java.util.List;
 import java.util.Map;
 
 public interface Memory extends Listener {
 
     void write(final int id, final String info);
 
-    boolean containsData(Integer id);
+    void writeFromOutside(String info);
 
-    String getData(Integer id);
+    void writeFromOutside(int id, String info);
 
-    Map<Integer, String> getAllData();
-
-    void setListeners(List<Listener> listeners);
+    Map<Integer, String> getData();
 
     void addLog(final String log);
 }

@@ -6,6 +6,6 @@ public enum MesiMessageType {
     SEND_VALID_INFO,
     READ_WITH_INTENT_TO_MODIFY,     // чтение с целью модификации
     WRITE_TO_MEMORY,
-    STUB_TO_MEMORY,
+    STUB_TO_MEMORY,                 // заглушка для памяти
     EMPTY                           // пустое сообщение для правильной работы памяти
 }

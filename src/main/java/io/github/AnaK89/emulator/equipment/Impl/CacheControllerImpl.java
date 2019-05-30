@@ -34,10 +34,6 @@ public class CacheControllerImpl implements CacheController {
         this.logs = logs;
     }
 
-    /*@Override
-    public void run() {
-    }*/
-
     @Override
     public void sendMessage(final Message message) {
         addLog(String.format("%s send message: %s - %d - %s", message.getSender(), message.getType(), message.getData().getId(), message.getData().getMessage()));
@@ -70,21 +66,6 @@ public class CacheControllerImpl implements CacheController {
     @Override
     public void requestValidInfo(final int id) {
         protocol.requestValidInfo(this, id);
-    }
-
-    @Override
-    public boolean containsCacheString(final Integer id) {
-        return cache.containsKey(id);
-    }
-
-    @Override
-    public CacheString getCacheString(final Integer id) {
-        return cache.get(id);
-    }
-
-    @Override
-    public void addCacheString(final Integer id, final CacheString cacheString) {
-        cache.put(id, cacheString);
     }
 
     @Override

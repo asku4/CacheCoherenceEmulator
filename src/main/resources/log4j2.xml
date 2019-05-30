@@ -7,10 +7,10 @@
         </Console>
     </Appenders>
     <Loggers>
-        <Logger name="ru.mesi.AnnaK" level="trace" additivity="false">
+        <Logger name="io.github.AnaK89.emulator" level="info" additivity="false">
             <AppenderRef ref="console" level="debug"/>
         </Logger>
-        <Root level="debug">
+        <Root level="info">
             <AppenderRef ref="console"/>
         </Root>
     </Loggers>

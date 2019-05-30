@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import io.github.AnaK89.emulator.equipment.Listener;
 import io.github.AnaK89.emulator.equipment.Memory;
+import io.github.AnaK89.emulator.equipment.utils.GeneratorId;
 import io.github.AnaK89.emulator.equipment.utils.Logs;
 import io.github.AnaK89.emulator.protocol.Message;
 import io.github.AnaK89.emulator.protocol.Protocol;
@@ -15,6 +16,7 @@ import java.util.*;
 @Singleton
 public class MemoryImpl implements Memory {
     private static final Logger logger = LogManager.getLogger(MemoryImpl.class);
+    private static final GeneratorId GENERATOR_ID = new GeneratorId();
     private final Protocol protocol;
     private final Logs logs;
     private final Map<Integer, String> data = new HashMap<>();
@@ -28,10 +30,6 @@ public class MemoryImpl implements Memory {
         this.protocol = protocol;
         this.logs = logs;
     }
-
-    /*@Override
-    public void run() {
-    }*/
 
     @Override
     public void sendMessage(Message message) {
@@ -54,23 +52,25 @@ public class MemoryImpl implements Memory {
     @Override
     public void write(final int id, final String info){
         if( ! data.containsKey(id) || (data.containsKey(id) && ! data.get(id).equals(info))){
+            GENERATOR_ID.updateId(id);
             addLog(String.format("Memory write: %d - %s", id, info));
             data.put(id, info);
         }
     }
 
     @Override
-    public boolean containsData(final Integer id){
-        return data.containsKey(id);
+    public void writeFromOutside(final String info){
+        write(GENERATOR_ID.generate(), info);
     }
 
     @Override
-    public String getData(final Integer id){
-        return data.get(id);
+    public void writeFromOutside(final int id, final String info){
+        protocol.broadcastInvalid(this, "Memory", id);
+        write(id, info);
     }
 
     @Override
-    public Map<Integer, String> getAllData(){
+    public Map<Integer, String> getData(){
         return this.data;
     }
 
