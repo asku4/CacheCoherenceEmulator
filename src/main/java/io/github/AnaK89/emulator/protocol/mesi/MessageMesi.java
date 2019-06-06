@@ -22,7 +22,7 @@ public class MessageMesi implements Message {
         this.data = new Data(id);
     }
 
-    //STUB_TO_MEMORY, EMPTY
+    //STUB_TO_MEMORY, EMPTY, ERROR_REQUEST
     MessageMesi(final String sender, final MesiMessageType type){
         this.type = type;
         this.data = new Data();

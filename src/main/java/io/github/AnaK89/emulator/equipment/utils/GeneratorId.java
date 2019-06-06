@@ -21,4 +21,9 @@ public class GeneratorId {
     public void updateId(final int i){
         insertsId.add(i);
     }
+
+    public void startOver(){
+        insertsId.clear();
+        lastId = 0;
+    }
 }

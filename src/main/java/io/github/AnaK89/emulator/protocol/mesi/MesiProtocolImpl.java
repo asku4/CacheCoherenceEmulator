@@ -35,6 +35,8 @@ public class MesiProtocolImpl implements Protocol {
                 return responseValidInfo(cacheController, message);
             case SEND_VALID_INFO:
                 return acceptValidInfo(cacheController, message);
+            case ERROR_REQUEST:
+                cacheController.isRequest(false);
         }
         return false;
     }
@@ -49,6 +51,9 @@ public class MesiProtocolImpl implements Protocol {
             final int id = message.getData().getId();
             if(memory.getData().containsKey(id)){
                 memory.sendMessage(new MessageMesi("Memory", SEND_VALID_INFO, id, memory.getData().get(id), StateMesi.E.toString()));
+            } else {
+                addLog(String.format("%s: строки не существует", ERROR_REQUEST.toString()));
+                memory.sendMessage(new MessageMesi("Memory", ERROR_REQUEST));
             }
         }
     }

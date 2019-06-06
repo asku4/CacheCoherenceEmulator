@@ -32,6 +32,7 @@ public class CacheControllerImpl implements CacheController {
             final Logs logs) {
         this.protocol = protocol;
         this.logs = logs;
+        GENERATOR_ID.startOver();
     }
 
     @Override
