@@ -25,4 +25,6 @@ public interface CacheController extends Listener {
     String getProcessorName();
 
     void addLog(final String log);
+
+    int getCountListeners();
 }

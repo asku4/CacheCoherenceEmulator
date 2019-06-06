@@ -9,31 +9,31 @@ public class MessageMesi implements Message {
     private final String sender;
 
     //сообщение для записи/модфикации сущестующих в кэше данных
-    MessageMesi(final String sender, final MesiMessageType type, final int id, final String message, final String newState){
+    MessageMesi(final String sender, final MesiMessageType type, final int id, final String data, final String newState){
         this.sender = sender;
         this.type = type;
-        this.data = new Data(id, message, newState);
+        this.data = new Data(id, data, newState);
     }
 
-    //для операции запроса валидной информации и RWITM, BROADCAST_INVALID
+    //NEED_VALID_INFO, RWITM, BROADCAST_INVALID
     MessageMesi(final String sender, final MesiMessageType type, final int id){
         this.sender = sender;
         this.type = type;
         this.data = new Data(id);
     }
 
-    //для операций STUB_TO_MEMORY, EMPTY
+    //STUB_TO_MEMORY, EMPTY
     MessageMesi(final String sender, final MesiMessageType type){
         this.type = type;
         this.data = new Data();
         this.sender = sender;
     }
 
-    //для записи в память
-    MessageMesi(final String sender, final MesiMessageType type, final int id, final String message){
+    //WRITE_TO_MEMORY
+    MessageMesi(final String sender, final MesiMessageType type, final int id, final String data){
         this.sender = sender;
         this.type = type;
-        this.data = new Data(id, message);
+        this.data = new Data(id, data);
     }
 
     public Data getData() {

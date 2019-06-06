@@ -106,4 +106,9 @@ public class CacheControllerImpl implements CacheController {
     public void setProcessor(final Processor processor){
         this.processor = processor;
     }
+
+    @Override
+    public int getCountListeners(){
+        return listeners.size();
+    }
 }

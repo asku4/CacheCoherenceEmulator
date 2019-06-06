@@ -9,7 +9,6 @@ import io.github.AnaK89.emulator.equipment.Processor;
 public class ProcessorImpl implements Processor {
     private static final Logger logger = LogManager.getLogger(ProcessorImpl.class);
     private final String name;
-
     private final CacheController controller;
 
     @Inject

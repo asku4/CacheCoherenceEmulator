@@ -57,7 +57,8 @@ public class MesiProtocolImpl implements Protocol {
     @Override
     public void writeToOwnCache(final CacheController cacheController, final int id, final String data){
         if (cacheController.getCache().containsKey(id)){
-            if(! StateMesi.M.toString().equals(cacheController.getCache().get(id).getState())){
+            final String state = cacheController.getCache().get(id).getState();
+            if(! StateMesi.M.toString().equals(state) && ! StateMesi.E.toString().equals(state)){
                 broadcastInvalid(cacheController, cacheController.getProcessorName(), id);
                 addLog("Broadcast invalid");
             }
@@ -80,18 +81,18 @@ public class MesiProtocolImpl implements Protocol {
         listener.sendMessage(new MessageMesi(name, BROADCAST_INVALID, id));
     }
 
-    private static int countProc = 0;
+    private static int countNullProc = 0;
     private synchronized void responseValidInfo(final CacheController cacheController, final Message message) {
         final int id = message.getData().getId();
         if( ! cacheController.getCache().containsKey(id) || cacheController.getCache().get(id).getState().equals(StateMesi.I.toString())){
-            countProc++;
-            if(countProc == 3){
-                countProc = 0;
+            countNullProc++;
+            if(countNullProc == cacheController.getCountListeners() - 1){
+                countNullProc = 0;
                 cacheController.sendMessage(new MessageMesi(cacheController.getProcessorName(), EMPTY));
             }
             return;
         } else {
-            countProc = 0;
+            countNullProc = 0;
         }
 
         cacheController.sendMessage(new MessageMesi(cacheController.getProcessorName(), STUB_TO_MEMORY));
@@ -104,21 +105,19 @@ public class MesiProtocolImpl implements Protocol {
                 cacheController.changeStateCacheString(id, StateMesi.S.toString());
                 break;
         }
+        countNullProc = 0;
     }
 
     private void responseToRWITM(final CacheController cacheController, final Message message){
-        if(message.getSender() != null && ! message.getSender().equals(cacheController.getProcessorName())){
-            final int id = message.getData().getId();
-            if (cacheController.getCache().containsKey(id)){
-                if(StateMesi.M.toString().equals(cacheController.getCache().get(id).getState())){
-                    cacheController.sendMessage(new MessageMesi(cacheController.getProcessorName(), STUB_TO_MEMORY));
-                    cacheController.sendMessage(new MessageMesi(cacheController.getProcessorName(), WRITE_TO_MEMORY, id, cacheController.getCache().get(id).getData()));
-                    cacheController.sendMessage(new MessageMesi(cacheController.getProcessorName(), EMPTY));
-                }
-                cacheController.changeStateCacheString(id, StateMesi.I.toString());
+        final int id = message.getData().getId();
+        if (cacheController.getCache().containsKey(id)){
+            if(StateMesi.M.toString().equals(cacheController.getCache().get(id).getState())){
+                cacheController.sendMessage(new MessageMesi(cacheController.getProcessorName(), STUB_TO_MEMORY));
+                cacheController.sendMessage(new MessageMesi(cacheController.getProcessorName(), WRITE_TO_MEMORY, id, cacheController.getCache().get(id).getData()));
+                cacheController.sendMessage(new MessageMesi(cacheController.getProcessorName(), EMPTY));
             }
+            cacheController.changeStateCacheString(id, StateMesi.I.toString());
         }
-
     }
 
     private void responseBroadcastInvalid(final CacheController cacheController, final Message message){
@@ -128,9 +127,7 @@ public class MesiProtocolImpl implements Protocol {
     }
 
     private void acceptValidInfo(final CacheController cacheController, final Message message){
-        if(cacheController.isRequested()
-                && message.getSender() != null
-                && ! message.getSender().equals(cacheController.getProcessorName())){
+        if(cacheController.isRequested()){
             final CacheString cacheString = new CacheString(message.getData().getNewState(), message.getData().getMessage());
             addLog(String.format("%s accept: %s - %s", cacheController.getProcessorName(), cacheString.getState(), cacheString.getData()));
             cacheController.getCache().put(message.getData().getId(), cacheString);
