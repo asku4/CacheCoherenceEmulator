@@ -38,13 +38,15 @@ public class CacheControllerImpl implements CacheController {
     public void sendMessage(final Message message) {
         addLog(String.format("%s send message: %s - %d - %s", message.getSender(), message.getType(), message.getData().getId(), message.getData().getMessage()));
         for(final Listener l: listeners){
-            l.getMessage(message);
+            if(l.getMessage(message)){
+                return;
+            }
         }
     }
 
     @Override
-    public void getMessage(final Message message) {
-        protocol.cacheProcess(this, message);
+    public boolean getMessage(final Message message) {
+        return protocol.cacheProcess(this, message);
     }
 
     @Override

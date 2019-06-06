@@ -8,7 +8,7 @@ public interface Listener {
 
     void sendMessage(final Message message);
 
-    void getMessage(final Message message);
+    boolean getMessage(final Message message);
 
     void setListeners(final List<Listener> listeners);
 }

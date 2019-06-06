@@ -39,14 +39,15 @@ public class MemoryImpl implements Memory {
     }
 
     @Override
-    public void getMessage(final Message message) {
+    public boolean getMessage(final Message message) {
         if(prevMessage == null){
             prevMessage = message;
-            return;
+            return false;
         }
 
         protocol.memoryProcess(this, prevMessage, message);
         prevMessage = message;
+        return false;
     }
 
     @Override
