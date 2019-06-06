@@ -52,7 +52,7 @@ public class MesiProtocolImpl implements Protocol {
             if(memory.getData().containsKey(id)){
                 memory.sendMessage(new MessageMesi("Memory", SEND_VALID_INFO, id, memory.getData().get(id), StateMesi.E.toString()));
             } else {
-                addLog(String.format("%s: строки не существует", ERROR_REQUEST.toString()));
+                addLog(ERROR_REQUEST.toString());
                 memory.sendMessage(new MessageMesi("Memory", ERROR_REQUEST));
             }
         }

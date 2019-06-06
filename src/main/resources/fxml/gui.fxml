@@ -9,15 +9,15 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.AnaK89.emulator.gui.ControllerGui">
+<StackPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="620.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.AnaK89.emulator.gui.ControllerGui">
    <children>
-      <VBox layoutY="1.0" prefHeight="600.0" prefWidth="900.0">
+      <VBox prefHeight="600.0" prefWidth="900.0">
          <children>
-            <VBox prefHeight="107.0" prefWidth="885.0">
+            <VBox prefHeight="130.0" prefWidth="840.0">
                <children>
                   <Label prefHeight="17.0" prefWidth="135.0" text="ОЗУ">
                      <font>
@@ -27,10 +27,10 @@
                         <Insets left="20.0" />
                      </VBox.margin>
                   </Label>
-                  <TableView fx:id="ramTable" prefHeight="90.0" prefWidth="857.0">
+                  <TableView fx:id="ramTable" prefHeight="129.0" prefWidth="860.0">
                      <columns>
-                        <TableColumn fx:id="idRamColumn" maxWidth="37.0" minWidth="30.0" prefWidth="37.0" text="ID" />
-                        <TableColumn fx:id="valueRamColumn" maxWidth="847.0" minWidth="822.0" prefWidth="822.0" resizable="false" text="Данные" />
+                        <TableColumn fx:id="idRamColumn" maxWidth="-1.0" minWidth="30.0" prefWidth="37.0" text="ID" />
+                        <TableColumn fx:id="valueRamColumn" maxWidth="828.0" minWidth="821.0" prefWidth="828.0" text="Данные" />
                      </columns>
                   </TableView>
                </children>
@@ -47,11 +47,11 @@
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
-                        <TableView fx:id="processorTable1" minHeight="-Infinity" minWidth="-Infinity" prefHeight="109.0" prefWidth="205.0">
+                        <TableView fx:id="processorTable1" prefHeight="109.0" prefWidth="205.0">
                            <columns>
-                              <TableColumn fx:id="idProcColumn1" maxWidth="37.0" minWidth="30.0" prefWidth="35.0" sortType="DESCENDING" text="ID" />
-                              <TableColumn fx:id="stateProcColumn1" maxWidth="68.0" minWidth="27.0" prefWidth="68.0" text="Состояние" />
-                              <TableColumn fx:id="valueProcColumn1" maxWidth="139.0" minWidth="27.0" prefWidth="102.0" text="Данные" />
+                              <TableColumn fx:id="idProcColumn1" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="35.0" sortType="DESCENDING" text="ID" />
+                              <TableColumn fx:id="stateProcColumn1" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="68.0" text="Состояние" />
+                              <TableColumn fx:id="valueProcColumn1" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="102.0" text="Данные" />
                            </columns>
                         </TableView>
                      </children>
@@ -66,17 +66,17 @@
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
-                        <TableView fx:id="processorTable2" minHeight="-Infinity" minWidth="-Infinity" prefHeight="109.0" prefWidth="205.0">
+                        <TableView fx:id="processorTable2" prefHeight="109.0" prefWidth="205.0">
                            <columns>
-                              <TableColumn fx:id="idProcColumn2" maxWidth="37.0" minWidth="30.0" prefWidth="35.0" text="ID" />
-                              <TableColumn fx:id="stateProcColumn2" maxWidth="68.0" minWidth="27.0" prefWidth="68.0" text="Состояние" />
-                              <TableColumn fx:id="valueProcColumn2" maxWidth="139.0" minWidth="27.0" prefWidth="102.0" text="Данные" />
+                              <TableColumn fx:id="idProcColumn2" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="35.0" text="ID" />
+                              <TableColumn fx:id="stateProcColumn2" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="68.0" text="Состояние" />
+                              <TableColumn fx:id="valueProcColumn2" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="102.0" text="Данные" />
                            </columns>
                         </TableView>
                      </children>
-                     <padding>
+                     <HBox.margin>
                         <Insets left="10.0" />
-                     </padding>
+                     </HBox.margin>
                   </VBox>
                   <VBox prefHeight="126.0" prefWidth="207.0">
                      <children>
@@ -85,11 +85,11 @@
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
-                        <TableView fx:id="processorTable3" minHeight="-Infinity" minWidth="-Infinity" prefHeight="109.0" prefWidth="205.0">
+                        <TableView fx:id="processorTable3" prefHeight="109.0" prefWidth="205.0">
                            <columns>
-                              <TableColumn fx:id="idProcColumn3" maxWidth="37.0" minWidth="30.0" prefWidth="35.0" text="ID" />
-                              <TableColumn fx:id="stateProcColumn3" maxWidth="68.0" minWidth="27.0" prefWidth="68.0" text="Состояние" />
-                              <TableColumn fx:id="valueProcColumn3" maxWidth="139.0" minWidth="27.0" prefWidth="102.0" text="Данные" />
+                              <TableColumn fx:id="idProcColumn3" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="35.0" text="ID" />
+                              <TableColumn fx:id="stateProcColumn3" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="68.0" text="Состояние" />
+                              <TableColumn fx:id="valueProcColumn3" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="102.0" text="Данные" />
                            </columns>
                         </TableView>
                      </children>
@@ -104,16 +104,16 @@
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
-                        <TableView fx:id="processorTable4" minHeight="-Infinity" minWidth="-Infinity" prefHeight="109.0" prefWidth="205.0">
+                        <TableView fx:id="processorTable4" prefHeight="109.0" prefWidth="205.0">
                            <columns>
-                              <TableColumn fx:id="idProcColumn4" maxWidth="37.0" minWidth="30.0" prefWidth="37.0" text="ID" />
-                              <TableColumn fx:id="stateProcColumn4" maxWidth="68.0" minWidth="27.0" prefWidth="68.0" text="Состояние" />
-                              <TableColumn fx:id="valueProcColumn4" maxWidth="139.0" minWidth="27.0" prefWidth="102.0" text="Данные" />
+                              <TableColumn fx:id="idProcColumn4" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="35.0" text="ID" />
+                              <TableColumn fx:id="stateProcColumn4" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="68.0" text="Состояние" />
+                              <TableColumn fx:id="valueProcColumn4" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="102.0" text="Данные" />
                            </columns>
                         </TableView>
                      </children>
                      <HBox.margin>
-                        <Insets left="10.0" right="20.0" />
+                        <Insets left="10.0" />
                      </HBox.margin>
                   </VBox>
                </children>
@@ -140,11 +140,13 @@
                                     <Label prefHeight="17.0" prefWidth="126.0" text="Выберите действие:">
                                        <VBox.margin>
                                           <Insets left="10.0" />
-                                       </VBox.margin></Label>
+                                       </VBox.margin>
+                                    </Label>
                                     <ComboBox fx:id="action" prefHeight="25.0" prefWidth="241.0">
                                        <VBox.margin>
                                           <Insets left="10.0" />
-                                       </VBox.margin></ComboBox>
+                                       </VBox.margin>
+                                    </ComboBox>
                                  </children>
                               </VBox>
                               <VBox fx:id="procNumPane" prefHeight="60.0" prefWidth="140.0">
@@ -235,7 +237,4 @@
          </children>
       </VBox>
    </children>
-   <opaqueInsets>
-      <Insets />
-   </opaqueInsets>
-</Pane>
+</StackPane>

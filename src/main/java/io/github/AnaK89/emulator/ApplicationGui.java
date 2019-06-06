@@ -22,8 +22,6 @@ public class ApplicationGui extends Application {
         final Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/fxml/gui.fxml")));
         stage.setScene(scene);
         stage.setTitle("Эмулятор MESI");
-        stage.setWidth(910);
-        stage.setHeight(640);
         stage.show();
     }
 

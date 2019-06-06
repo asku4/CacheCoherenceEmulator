@@ -142,6 +142,7 @@ public class ControllerGui implements Initializable{
             case WRITE_TO_MEMORY:
                 addLog(String.format("Request: %s - Data: %s", action.getValue(), data.getText()));
                 multiprocessor.getMemory().writeFromOutside(data.getText());
+                break;
             case WRITE_TO_MEMORY_WITH_ID:
                 if(id != -1){
                     addLog(String.format("Request: %s - ID: %d - Data: %s", action.getValue(), id, data.getText()));
