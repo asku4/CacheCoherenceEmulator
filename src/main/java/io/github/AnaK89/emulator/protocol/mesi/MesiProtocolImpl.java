@@ -50,10 +50,11 @@ public class MesiProtocolImpl implements Protocol {
         if(message.getType().equals(NEED_VALID_INFO) && ! nextMessage.getType().equals(STUB_TO_MEMORY)){
             final int id = message.getData().getId();
             if(memory.getData().containsKey(id)){
-                memory.sendMessage(new MessageMesi(Memory.class.getName(), SEND_VALID_INFO, id, memory.getData().get(id), StateMesi.E.toString()));
+                addLog(String.format("%s send: %d - %s", Memory.NAME, id, memory.getData().get(id)));
+                memory.sendMessage(new MessageMesi(Memory.NAME, SEND_VALID_INFO, id, memory.getData().get(id), StateMesi.E.toString()));
             } else {
                 addLog(ERROR_REQUEST.toString());
-                memory.sendMessage(new MessageMesi(Memory.class.getName(), ERROR_REQUEST));
+                memory.sendMessage(new MessageMesi(Memory.NAME, ERROR_REQUEST));
             }
         }
     }
@@ -133,7 +134,7 @@ public class MesiProtocolImpl implements Protocol {
     private boolean acceptValidInfo(final CacheController cacheController, final Message message){
         if(cacheController.isRequested()){
             final CacheString cacheString = new CacheString(message.getData().getNewState(), message.getData().getMessage());
-            addLog(String.format("%s accept: %s - %s", cacheController.getProcessorName(), cacheString.getState(), cacheString.getData()));
+            addLog(String.format("%s accept: %d - %s - %s", cacheController.getProcessorName(), message.getData().getId(), cacheString.getState(), cacheString.getData()));
             cacheController.getCache().put(message.getData().getId(), cacheString);
             cacheController.isRequest(false);
             return true;

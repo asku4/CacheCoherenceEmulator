@@ -63,7 +63,7 @@ public class MemoryImpl implements Memory {
 
     @Override
     public void writeFromOutside(final int id, final String info){
-        protocol.broadcastInvalid(this, "Memory", id);
+        protocol.broadcastInvalid(this, NAME, id);
         write(id, info);
     }
 
