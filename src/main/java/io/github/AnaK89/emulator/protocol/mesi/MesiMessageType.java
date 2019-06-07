@@ -7,6 +7,6 @@ public enum MesiMessageType {
     READ_WITH_INTENT_TO_MODIFY,     // чтение с целью модификации
     WRITE_TO_MEMORY,
     STUB_TO_MEMORY,                 // заглушка для памяти
-    EMPTY,                           // пустое сообщение для правильной работы памяти
-    ERROR_REQUEST
+    EMPTY,                          // пустое сообщение для правильной работы памяти
+    ERROR_REQUEST                   // для невалидных запросов
 }

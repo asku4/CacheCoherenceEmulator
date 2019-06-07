@@ -1,6 +1,5 @@
 package io.github.AnaK89.emulator.equipment.Impl;
 
-import com.google.inject.Inject;
 import io.github.AnaK89.emulator.equipment.CacheController;
 import io.github.AnaK89.emulator.equipment.Processor;
 import io.github.AnaK89.emulator.equipment.Listener;
@@ -26,7 +25,6 @@ public class CacheControllerImpl implements CacheController {
     private Processor processor;
     private boolean isRequested = false;
 
-    @Inject
     public CacheControllerImpl(
             final Protocol protocol,
             final Logs logs) {

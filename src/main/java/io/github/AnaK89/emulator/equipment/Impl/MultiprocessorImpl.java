@@ -1,6 +1,5 @@
 package io.github.AnaK89.emulator.equipment.Impl;
 
-import com.google.inject.Inject;
 import io.github.AnaK89.emulator.equipment.Memory;
 import io.github.AnaK89.emulator.equipment.Listener;
 import io.github.AnaK89.emulator.equipment.utils.Logs;
@@ -17,7 +16,6 @@ public class MultiprocessorImpl implements Multiprocessor {
     private final List<Processor> processors = new ArrayList<>();
     private static final Logs logs = new Logs();
 
-    @Inject
     public MultiprocessorImpl(final int quantityProcessors) {
         List<Listener> listeners = new ArrayList<>();
 

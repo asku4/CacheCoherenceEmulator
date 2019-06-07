@@ -50,10 +50,10 @@ public class MesiProtocolImpl implements Protocol {
         if(message.getType().equals(NEED_VALID_INFO) && ! nextMessage.getType().equals(STUB_TO_MEMORY)){
             final int id = message.getData().getId();
             if(memory.getData().containsKey(id)){
-                memory.sendMessage(new MessageMesi("Memory", SEND_VALID_INFO, id, memory.getData().get(id), StateMesi.E.toString()));
+                memory.sendMessage(new MessageMesi(Memory.class.getName(), SEND_VALID_INFO, id, memory.getData().get(id), StateMesi.E.toString()));
             } else {
                 addLog(ERROR_REQUEST.toString());
-                memory.sendMessage(new MessageMesi("Memory", ERROR_REQUEST));
+                memory.sendMessage(new MessageMesi(Memory.class.getName(), ERROR_REQUEST));
             }
         }
     }

@@ -1,6 +1,5 @@
 package io.github.AnaK89.emulator.equipment.Impl;
 
-import com.google.inject.Inject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import io.github.AnaK89.emulator.equipment.CacheController;
@@ -11,7 +10,6 @@ public class ProcessorImpl implements Processor {
     private final String name;
     private final CacheController controller;
 
-    @Inject
     public ProcessorImpl(
             final String name,
             final CacheController controller){

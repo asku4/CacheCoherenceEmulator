@@ -1,7 +1,5 @@
 package io.github.AnaK89.emulator.equipment.Impl;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import io.github.AnaK89.emulator.equipment.Listener;
 import io.github.AnaK89.emulator.equipment.Memory;
 import io.github.AnaK89.emulator.equipment.utils.GeneratorId;
@@ -13,7 +11,6 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 
-@Singleton
 public class MemoryImpl implements Memory {
     private static final Logger logger = LogManager.getLogger(MemoryImpl.class);
     private static final GeneratorId GENERATOR_ID = new GeneratorId();
@@ -23,7 +20,6 @@ public class MemoryImpl implements Memory {
     private List<Listener> listeners;
     private Message prevMessage;
 
-    @Inject
     public MemoryImpl(
             final Protocol protocol,
             final Logs logs){

@@ -8,7 +8,7 @@ public class MessageMesi implements Message {
     private final Data data;
     private final String sender;
 
-    //сообщение для записи/модфикации сущестующих в кэше данных
+    //SEND_VALID_INFO
     MessageMesi(final String sender, final MesiMessageType type, final int id, final String data, final String newState){
         this.sender = sender;
         this.type = type;
