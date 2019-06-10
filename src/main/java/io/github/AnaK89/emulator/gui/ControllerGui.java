@@ -123,37 +123,31 @@ public class ControllerGui implements Initializable{
     @FXML
     private void request() {
         final int id = validateIDField();
-        if(id == -1
+        if(id < 0
                 && !Objects.equals(Action.getValueOf(action.getValue()), WRITE_TO_OWN_CACHE)
                 && !Objects.equals(Action.getValueOf(action.getValue()), WRITE_TO_MEMORY)){
             addLog("ID Number of Processor is invalid");
         } else {
             switch (Objects.requireNonNull(Action.getValueOf(action.getValue()))){
                 case REQUEST_VALID_INFO:
-                    if(id != -1){
-                        addLog(String.format("Request: %s - Proc: %d - ID: %d", action.getValue(), processorNum.getValue(), id));
-                        multiprocessor.getProcessors().get(processorNum.getValue() - 1).getController().requestValidInfo(id);
-                    }
+                    addLog(String.format("Request: %s - Proc: %d - ID: %d", action.getValue(), processorNum.getValue(), id));
+                    multiprocessor.getProcessors().get(processorNum.getValue() - 1).getController().requestValidInfo(id);
                     break;
                 case WRITE_TO_OWN_CACHE:
                     addLog(String.format("Request: %s - Proc: %d - Data: %s", action.getValue(), processorNum.getValue(), data.getText()));
                     multiprocessor.getProcessors().get(processorNum.getValue() - 1).getController().writeToOwnCache(data.getText());
                     break;
                 case WRITE_TO_OWN_CACHE_WITH_ID:
-                    if(id != -1){
-                        addLog(String.format("Request: %s - Proc: %d - ID: %d - Data: %s", action.getValue(), processorNum.getValue(), id, data.getText()));
-                        multiprocessor.getProcessors().get(processorNum.getValue() - 1).getController().writeToOwnCache(id, data.getText());
-                    }
+                    addLog(String.format("Request: %s - Proc: %d - ID: %d - Data: %s", action.getValue(), processorNum.getValue(), id, data.getText()));
+                    multiprocessor.getProcessors().get(processorNum.getValue() - 1).getController().writeToOwnCache(id, data.getText());
                     break;
                 case WRITE_TO_MEMORY:
                     addLog(String.format("Request: %s - Data: %s", action.getValue(), data.getText()));
                     multiprocessor.getMemory().writeFromOutside(data.getText());
                     break;
                 case WRITE_TO_MEMORY_WITH_ID:
-                    if(id != -1){
-                        addLog(String.format("Request: %s - ID: %d - Data: %s", action.getValue(), id, data.getText()));
-                        multiprocessor.getMemory().writeFromOutside(id, data.getText());
-                    }
+                    addLog(String.format("Request: %s - ID: %d - Data: %s", action.getValue(), id, data.getText()));
+                    multiprocessor.getMemory().writeFromOutside(id, data.getText());
             }
         }
 
