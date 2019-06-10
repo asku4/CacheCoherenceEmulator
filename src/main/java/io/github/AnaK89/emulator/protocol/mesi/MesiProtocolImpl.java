@@ -77,8 +77,14 @@ public class MesiProtocolImpl implements Protocol {
 
     @Override
     public void requestValidInfo(final CacheController cacheController, final int id){
-        cacheController.isRequest(true);
-        cacheController.sendMessage(new MessageMesi(cacheController.getProcessorName(), NEED_VALID_INFO, id));
+        if( ! cacheController.getCache().containsKey(id)
+                || (cacheController.getCache().containsKey(id)
+                    && StateMesi.I.toString().equals(cacheController.getCache().get(id).getState()))){
+            cacheController.isRequest(true);
+            cacheController.sendMessage(new MessageMesi(cacheController.getProcessorName(), NEED_VALID_INFO, id));
+        } else {
+            addLog(ERROR_REQUEST.toString());
+        }
     }
 
     @Override
