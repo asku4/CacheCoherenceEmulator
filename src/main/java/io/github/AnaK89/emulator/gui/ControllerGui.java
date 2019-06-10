@@ -112,6 +112,11 @@ public class ControllerGui implements Initializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        ramTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        processorTable1.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        processorTable2.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        processorTable3.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        processorTable4.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         initComponents(true);
     }
 

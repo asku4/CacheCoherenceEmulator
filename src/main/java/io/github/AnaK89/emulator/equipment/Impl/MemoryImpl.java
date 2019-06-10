@@ -13,19 +13,20 @@ import java.util.*;
 
 public class MemoryImpl implements Memory {
     private static final Logger logger = LogManager.getLogger(MemoryImpl.class);
-    private static final GeneratorId GENERATOR_ID = new GeneratorId();
     private final Protocol protocol;
+    private final GeneratorId generatorId;
     private final Logs logs;
     private final Map<Integer, String> data = new HashMap<>();
     private List<Listener> listeners;
     private Message prevMessage;
 
-    public MemoryImpl(
+    MemoryImpl(
             final Protocol protocol,
+            final GeneratorId generatorId,
             final Logs logs){
         this.protocol = protocol;
         this.logs = logs;
-        GENERATOR_ID.startOver();
+        this.generatorId = generatorId;
     }
 
     @Override
@@ -50,7 +51,7 @@ public class MemoryImpl implements Memory {
     @Override
     public void write(final int id, final String info){
         if( ! data.containsKey(id) || (data.containsKey(id) && ! data.get(id).equals(info))){
-            GENERATOR_ID.updateId(id);
+            generatorId.updateId(id);
             addLog(String.format("Memory write: %d - %s", id, info));
             data.put(id, info);
         }
@@ -58,7 +59,7 @@ public class MemoryImpl implements Memory {
 
     @Override
     public void writeFromOutside(final String info){
-        write(GENERATOR_ID.generate(), info);
+        write(generatorId.generate(), info);
     }
 
     @Override

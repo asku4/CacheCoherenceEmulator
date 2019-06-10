@@ -17,20 +17,21 @@ import java.util.Map;
 
 public class CacheControllerImpl implements CacheController {
     private static final Logger logger = LogManager.getLogger(CacheControllerImpl.class);
-    private static final GeneratorId GENERATOR_ID = new GeneratorId();
     private final Map<Integer, CacheString> cache = new HashMap<>();
     private final Protocol protocol;
+    private final GeneratorId generatorId;
     private final Logs logs;
     private List<Listener> listeners;
     private Processor processor;
     private boolean isRequested = false;
 
-    public CacheControllerImpl(
+    CacheControllerImpl(
             final Protocol protocol,
+            final GeneratorId generatorId,
             final Logs logs) {
         this.protocol = protocol;
         this.logs = logs;
-        GENERATOR_ID.startOver();
+        this.generatorId = generatorId;
     }
 
     @Override
@@ -55,12 +56,12 @@ public class CacheControllerImpl implements CacheController {
 
     @Override
     public void writeToOwnCache(String data) {
-        writeToOwnCache(GENERATOR_ID.generate(), data);
+        writeToOwnCache(generatorId.generate(), data);
     }
 
     @Override
     public void writeToOwnCache(final int id, final String data) {
-        GENERATOR_ID.updateId(id);
+        generatorId.updateId(id);
         protocol.writeToOwnCache(this, id, data);
     }
 

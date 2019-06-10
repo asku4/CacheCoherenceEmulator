@@ -10,7 +10,7 @@ public class ProcessorImpl implements Processor {
     private final String name;
     private final CacheController controller;
 
-    public ProcessorImpl(
+    ProcessorImpl(
             final String name,
             final CacheController controller){
         logger.info("Processor: {} - Controller: {}", name, controller);

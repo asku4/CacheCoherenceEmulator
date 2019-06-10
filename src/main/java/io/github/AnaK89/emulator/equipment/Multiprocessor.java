@@ -5,6 +5,7 @@ import io.github.AnaK89.emulator.equipment.utils.Logs;
 import java.util.List;
 
 public interface Multiprocessor {
+
     List<Processor> getProcessors();
 
     Memory getMemory();

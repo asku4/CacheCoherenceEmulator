@@ -30,7 +30,7 @@
                   <TableView fx:id="ramTable" prefHeight="129.0" prefWidth="835.0">
                      <columns>
                         <TableColumn fx:id="idRamColumn" maxWidth="37.0" minWidth="30.0" prefWidth="37.0" text="ID" />
-                        <TableColumn fx:id="valueRamColumn" maxWidth="815.0" minWidth="815.0" prefWidth="815.0" text="Данные" />
+                        <TableColumn fx:id="valueRamColumn" maxWidth="822.0" minWidth="790.0" prefWidth="822.0" text="Данные" />
                      </columns>
                   </TableView>
                </children>
@@ -51,7 +51,7 @@
                            <columns>
                               <TableColumn fx:id="idProcColumn1" maxWidth="35.0" minWidth="30.0" prefWidth="35.0" sortType="DESCENDING" text="ID" />
                               <TableColumn fx:id="stateProcColumn1" maxWidth="68.0" minWidth="68.0" prefWidth="68.0" text="Состояние" />
-                              <TableColumn fx:id="valueProcColumn1" maxWidth="102.0" minWidth="102.0" prefWidth="102.0" text="Данные" />
+                              <TableColumn fx:id="valueProcColumn1" maxWidth="102.0" minWidth="80.0" prefWidth="102.0" text="Данные" />
                            </columns>
                         </TableView>
                      </children>
@@ -70,7 +70,7 @@
                            <columns>
                               <TableColumn fx:id="idProcColumn2" maxWidth="35.0" minWidth="30.0" prefWidth="35.0" text="ID" />
                               <TableColumn fx:id="stateProcColumn2" maxWidth="68.0" minWidth="68.0" prefWidth="68.0" text="Состояние" />
-                              <TableColumn fx:id="valueProcColumn2" maxWidth="102.0" minWidth="102.0" prefWidth="102.0" text="Данные" />
+                              <TableColumn fx:id="valueProcColumn2" maxWidth="102.0" minWidth="80.0" prefWidth="102.0" text="Данные" />
                            </columns>
                         </TableView>
                      </children>
@@ -89,7 +89,7 @@
                            <columns>
                               <TableColumn fx:id="idProcColumn3" maxWidth="35.0" minWidth="30.0" prefWidth="35.0" text="ID" />
                               <TableColumn fx:id="stateProcColumn3" maxWidth="68.0" minWidth="68.0" prefWidth="68.0" text="Состояние" />
-                              <TableColumn fx:id="valueProcColumn3" maxWidth="102.0" minWidth="102.0" prefWidth="102.0" text="Данные" />
+                              <TableColumn fx:id="valueProcColumn3" maxWidth="102.0" minWidth="80.0" prefWidth="102.0" text="Данные" />
                            </columns>
                         </TableView>
                      </children>
@@ -108,7 +108,7 @@
                            <columns>
                               <TableColumn fx:id="idProcColumn4" maxWidth="35.0" minWidth="30.0" prefWidth="35.0" text="ID" />
                               <TableColumn fx:id="stateProcColumn4" maxWidth="68.0" minWidth="68.0" prefWidth="68.0" text="Состояние" />
-                              <TableColumn fx:id="valueProcColumn4" maxWidth="102.0" minWidth="102.0" prefWidth="102.0" text="Данные" />
+                              <TableColumn fx:id="valueProcColumn4" maxWidth="102.0" minWidth="80.0" prefWidth="102.0" text="Данные" />
                            </columns>
                         </TableView>
                      </children>
